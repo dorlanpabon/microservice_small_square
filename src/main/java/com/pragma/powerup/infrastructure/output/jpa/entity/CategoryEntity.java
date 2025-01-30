@@ -22,33 +22,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "restaurants")
-public class RestaurantEntity {
+@Table(name = "categories")
+public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 255)
-    private String address;
+    @Column(length = 255)
+    private String description;
 
-    @Column(nullable = false)
-    private Long ownerId;
-
-    @Column(nullable = false, length = 13)
-    private String phone;
-
-    @Column(nullable = false)
-    private String logoUrl;
-
-    @Column(nullable = false, unique = true)
-    private String nit;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DishEntity> dishes;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderEntity> orders;
 }

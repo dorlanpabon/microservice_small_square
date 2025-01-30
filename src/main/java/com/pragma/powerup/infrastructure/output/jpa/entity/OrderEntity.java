@@ -1,4 +1,4 @@
-package com.pragma.powerup;
+package com.pragma.powerup.infrastructure.output.jpa.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,31 +26,28 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "dishes")
-public class Dish {
+@Table(name = "orders")
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column(nullable = false)
+    private Long clientId;
 
     @Column(nullable = false)
-    private Long categoryId;
+    private LocalDateTime date;
 
-    @Column(nullable = false, length = 255)
-    private String description;
-
-    @Column(nullable = false)
-    private Double price;
+    @Column(nullable = false, length = 20)
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    private RestaurantEntity restaurant;
 
-    @Column(nullable = false)
-    private String imageUrl;
+    @Column
+    private Long chefId;
 
-    @Column(nullable = false)
-    private Boolean active = true;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDishEntity> orderDishes;
 }
