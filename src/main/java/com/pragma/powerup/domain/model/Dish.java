@@ -85,4 +85,19 @@ public class Dish {
     public void setOrderDishes(List<OrderDish> orderDishes) {
         this.orderDishes = orderDishes;
     }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", restaurant=" + restaurant +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", active=" + active +
+                ", orderDishes=" + orderDishes +
+                '}';
+    }
 }

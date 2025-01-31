@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 public class OrderDishRequest {
 
-    private Long id;
-
-    private OrderRequest order;
-
-    private DishRequest dish;
+    private Long dishId;
 
     private Integer quantity;
 

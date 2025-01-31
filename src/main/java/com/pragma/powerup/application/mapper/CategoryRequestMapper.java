@@ -10,9 +10,9 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface CategoryRequestMapper {
-    @Mapping(target = "id", source = "id")
+//    @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "description", source = "description")
-    @Mapping(target = "dishes", source = "dishes")
+//    @Mapping(target = "dishes", source = "dishes")
     Category toCategory(CategoryRequest categoryRequest);
 }

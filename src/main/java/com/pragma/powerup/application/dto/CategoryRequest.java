@@ -12,12 +12,12 @@ import java.util.List;
 @Setter
 public class CategoryRequest {
 
-    private Long id;
+//    private Long id;
 
     private String name;
 
     private String description;
 
-    private List<Dish> dishes;
+//    private List<Dish> dishes;
 
 }

@@ -38,4 +38,14 @@ public class OrderDish {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDish{" +
+                "id=" + id +
+                ", order=" + order +
+                ", dish=" + dish +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

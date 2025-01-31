@@ -1,10 +1,12 @@
 package com.pragma.powerup.infrastructure.output.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = {"orders"})
 @Table(name = "restaurants")
 public class RestaurantEntity {
     @Id
@@ -46,9 +49,7 @@ public class RestaurantEntity {
     @Column(nullable = false, unique = true)
     private String nit;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DishEntity> dishes;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders;
 }

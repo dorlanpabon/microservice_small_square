@@ -26,11 +26,6 @@ public class BeanConfigurationCategory {
 
     @Bean
     public ICategoryServicePort categoryServicePort() {
-        return new CategoryUseCase(categoryPersistencePort()) {
-            @Override
-            public Page<Category> getCategorys(int page, int size, boolean ascending) {
-                return null;
-            }
-        };
+        return new CategoryUseCase(categoryPersistencePort());
     }
 }

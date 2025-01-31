@@ -1,5 +1,7 @@
 package com.pragma.powerup.domain.api;
 
+import com.pragma.powerup.domain.dto.PaginatedModel;
+import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import com.pragma.powerup.domain.model.Order;
 import org.springframework.data.domain.Page;
 
@@ -19,5 +21,5 @@ public interface IOrderServicePort {
 
     Page<Order> getOrders(int page, int size, boolean ascending);
 
-    Page<Order> getOrders(int pageNumber, int pageSize, String sortDirection);
+    PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status);
 }

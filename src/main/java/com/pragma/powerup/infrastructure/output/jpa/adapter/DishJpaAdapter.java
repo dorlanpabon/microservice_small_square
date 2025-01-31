@@ -1,8 +1,11 @@
 package com.pragma.powerup.infrastructure.output.jpa.adapter;
 
+import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Dish;
+import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.output.jpa.entity.DishEntity;
+import com.pragma.powerup.infrastructure.output.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.output.jpa.mapper.DishEntityMapper;
 import com.pragma.powerup.infrastructure.output.jpa.repository.IDishRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -22,9 +26,6 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public void saveDish(Dish dish) {
-        //if (dishRepository.findByName(dish.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Dish already exists");
-        //}
         dishRepository.save(dishEntityMapper.toEntity(dish));
     }
 
@@ -45,10 +46,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public void updateDish(Dish dish) {
-        //if (dishRepository.findByName(dish.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Dish already exists");
-        //}
-        dishRepository.save(dishEntityMapper.toEntity(dish));
+        dishRepository.updateDish(dishEntityMapper.toEntity(dish));
     }
 
     @Override
@@ -65,16 +63,26 @@ public class DishJpaAdapter implements IDishPersistencePort {
         return entityPage.map(dishEntityMapper::toDish);
     }
 
-    @Override
-    public Page<Dish> getDishs(int page, int size, boolean ascending) {
-        Pageable pageable = PageRequest.of(page, size, ascending ? Sort.by("id").ascending() : Sort.by("id").descending());
-        return dishRepository.findAll(pageable).map(dishEntityMapper::toDish);
-    }
 
     @Override
-    public Page<Dish> getDishs(int pageNumber, int pageSize, String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDirection.equals("asc") ? Sort.by("id").ascending() : Sort.by("id").descending());
-        return dishRepository.findAll(pageable).map(dishEntityMapper::toDish);
+    public PaginatedModel<Dish> getDishs(int page, int size, String sortDirection, Long categoryId) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "name");
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<DishEntity> dishEntities;
+
+        if (categoryId != null) {
+            dishEntities = dishRepository.findByCategoryId(categoryId, pageable);
+        } else {
+            dishEntities = dishRepository.findAll(pageable);
+        }
+
+        List<Dish> content = dishEntities.getContent().stream()
+                .map(dishEntityMapper::toDish)
+                .collect(Collectors.toList());
+
+        return new PaginatedModel<>(content, dishEntities.getNumber(),
+                dishEntities.getTotalPages(), dishEntities.getTotalElements());
     }
 
     @Override

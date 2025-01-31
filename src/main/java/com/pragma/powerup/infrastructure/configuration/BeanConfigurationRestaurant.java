@@ -15,14 +15,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfigurationRestaurant {
 
     private final IRestaurantRepository restaurantRepository;
     private final RestaurantEntityMapper restaurantEntityMapper;
-    private final IUserServicePort userServicePort;
     private final UserFeignClient userFeignClient;
+    private final HttpServletRequest request;
+
 
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort() {
@@ -31,7 +34,7 @@ public class BeanConfigurationRestaurant {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserServiceAdapter(userFeignClient);
+        return new UserServiceAdapter(userFeignClient, request);
     }
 
     @Bean

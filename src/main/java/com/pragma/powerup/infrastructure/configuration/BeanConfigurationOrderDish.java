@@ -26,11 +26,6 @@ public class BeanConfigurationOrderDish {
 
     @Bean
     public IOrderDishServicePort orderdishServicePort() {
-        return new OrderDishUseCase(orderdishPersistencePort()) {
-            @Override
-            public Page<OrderDish> getOrderDishs(int page, int size, boolean ascending) {
-                return null;
-            }
-        };
+        return new OrderDishUseCase(orderdishPersistencePort());
     }
 }

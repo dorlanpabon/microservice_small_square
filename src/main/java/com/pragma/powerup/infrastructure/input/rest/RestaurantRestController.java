@@ -1,6 +1,8 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.PaginatedResponse;
 import com.pragma.powerup.application.dto.RestaurantRequest;
+import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.application.handler.IRestaurantHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +21,17 @@ public class
 RestaurantRestController {
 
     private final IRestaurantHandler restaurantHandler;
+
+    @Operation(summary = "Get all restaurants", description = "Retrieve a list of restaurants")
+    @GetMapping
+    public ResponseEntity<PaginatedResponse<RestaurantResponse>> getRestaurants(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortDirection
+    ) {
+        PaginatedResponse<RestaurantResponse> Restaurants = restaurantHandler.getRestaurants(page, size, sortDirection);
+        return ResponseEntity.ok(Restaurants);
+    }
 
     @Operation(summary = "Create a new restaurant", description = "Add a new restaurant to the system")
     @ApiResponses(value = {

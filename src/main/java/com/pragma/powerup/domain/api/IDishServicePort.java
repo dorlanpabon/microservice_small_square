@@ -1,5 +1,6 @@
 package com.pragma.powerup.domain.api;
 
+import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Dish;
 import org.springframework.data.domain.Page;
 
@@ -17,7 +18,7 @@ public interface IDishServicePort {
 
     void deleteDish(Long dishId);
 
-    Page<Dish> getDishs(int page, int size, boolean ascending);
+    PaginatedModel<Dish> getDishs(int page, int size, String ascending, Long categoryId);
 
-    Page<Dish> getDishs(int pageNumber, int pageSize, String sortDirection);
+    void toggleDishStatus(Long dishId);
 }

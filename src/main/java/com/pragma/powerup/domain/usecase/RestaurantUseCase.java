@@ -1,11 +1,15 @@
 package com.pragma.powerup.domain.usecase;
 
+import com.pragma.powerup.application.dto.PaginatedResponse;
+import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.constants.DomainConstants;
+import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.exception.DomainException;
 import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
+import org.springframework.data.domain.Page;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
 
@@ -42,6 +46,11 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         }
 
         restaurantPersistencePort.saveRestaurant(restaurant);
+    }
+
+    @Override
+    public PaginatedModel<Restaurant> getRestaurants(int page, int size, String sortDirection) {
+        return restaurantPersistencePort.getRestaurants(page, size, sortDirection);
     }
 
 }

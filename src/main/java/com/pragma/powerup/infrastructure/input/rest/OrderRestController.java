@@ -2,17 +2,17 @@ package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
+import com.pragma.powerup.application.dto.PaginatedResponse;
 import com.pragma.powerup.application.handler.IOrderHandler;
-import com.pragma.powerup.application.handler.OrderHandler;
+import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Order API")
@@ -25,17 +25,19 @@ public class OrderRestController {
 
     @Operation(summary = "Get all orders", description = "Retrieve a list of orders")
     @GetMapping
-    public ResponseEntity<Page<OrderResponse>> getOrders(
+    public ResponseEntity<PaginatedResponse<OrderResponse>> getOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(defaultValue = "PENDING") OrderStatusEnum status
     ) {
-        Page<OrderResponse> orders = orderHandler.getOrders(page, size, sortDirection);
+        PaginatedResponse<OrderResponse> orders = orderHandler.getOrders(page, size, sortDirection, status);
         return ResponseEntity.ok(orders);
     }
 
     @Operation(summary = "Create a new order", description = "Add a new order to the system")
     @PostMapping("/")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Void> saveOrderInOrder(@RequestBody OrderRequest orderRequest) {
         orderHandler.saveOrderInOrder(orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();

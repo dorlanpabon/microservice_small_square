@@ -1,8 +1,12 @@
 package com.pragma.powerup.infrastructure.output.jpa.repository;
 
+import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import com.pragma.powerup.infrastructure.output.jpa.entity.OrderEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
@@ -10,4 +14,8 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     Optional<OrderEntity> findById(Long orderId);
 
     void deleteById(Long orderId);
+
+    Page<OrderEntity> findAllByStatus(OrderStatusEnum status, Pageable pageable);
+
+    Page<OrderEntity> findAllByStatusAndRestaurantOwnerId(OrderStatusEnum status, Long ownerId, Pageable pageable);
 }

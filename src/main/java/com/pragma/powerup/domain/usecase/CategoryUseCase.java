@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public abstract class CategoryUseCase implements ICategoryServicePort {
+public class CategoryUseCase implements ICategoryServicePort {
 
     private final ICategoryPersistencePort categoryPersistencePort;
 
@@ -44,6 +44,11 @@ public abstract class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
+    public Page<Category> getCategorys(int page, int size, boolean ascending) {
+        return null;
+    }
+
+    @Override
     public Page<Category> getCategorys(int pageNumber, int pageSize, String sortDirection) {
         Sort sort = Sort.by("name");
         if ("desc".equalsIgnoreCase(sortDirection)) {
@@ -55,6 +60,4 @@ public abstract class CategoryUseCase implements ICategoryServicePort {
         return categoryPersistencePort.findAll(pageable);
     }
 
-    //TODO: Add pagination support if needed
-    public abstract Page<Category> getCategorys(int page, int size, boolean ascending);
 }

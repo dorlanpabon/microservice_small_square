@@ -47,6 +47,18 @@ public class ValidationConstants {
     public static final String NAME_REGEX = "^(?![0-9]+$).+$";
 
 
+
+    public static final String NAME_DISH_REQUIRED = "Dish name is required.";
+    public static final String NAME_DISH_MAX_LENGTH = "Dish name cannot exceed 100 characters.";
+    public static final String CATEGORY_ID_REQUIRED = "Category ID is required.";
+    public static final String DESCRIPTION_REQUIRED = "Description is required.";
+    public static final String DESCRIPTION_MAX_LENGTH = "Description cannot exceed 255 characters.";
+    public static final String PRICE_REQUIRED = "Price is required.";
+    public static final String PRICE_POSITIVE = "Price must be a positive integer greater than 0.";
+    public static final String IMAGE_URL_REQUIRED = "Image URL is required.";
+    public static final String RESTAURANT_ID_REQUIRED = "Restaurant ID is required.";
+    public static final String EMPLOYEE_ID_REQUIRED = "Employee ID is required.";
+
     private ValidationConstants() {
         throw new IllegalStateException("Utility class");
     }

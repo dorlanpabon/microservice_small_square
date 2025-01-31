@@ -1,8 +1,13 @@
 package com.pragma.powerup.infrastructure.output.jpa.adapter;
 
+import com.pragma.powerup.domain.dto.PaginatedModel;
+import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import com.pragma.powerup.domain.model.Order;
+import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
+import com.pragma.powerup.infrastructure.output.jpa.entity.OrderDishEntity;
 import com.pragma.powerup.infrastructure.output.jpa.entity.OrderEntity;
+import com.pragma.powerup.infrastructure.output.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.output.jpa.mapper.OrderEntityMapper;
 import com.pragma.powerup.infrastructure.output.jpa.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -22,10 +29,16 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
     @Override
     public void saveOrder(Order order) {
-        //if (orderRepository.findByName(order.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Order already exists");
-        //}
-        orderRepository.save(orderEntityMapper.toEntity(order));
+        OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+
+        List<OrderDishEntity> dishesCopy = new ArrayList<>(orderEntity.getOrderDishes());
+        orderEntity.getOrderDishes().clear();
+
+        for (OrderDishEntity dish : dishesCopy) {
+            orderEntity.addOrderDish(dish);
+        }
+
+        orderRepository.save(orderEntity);
     }
 
     @Override
@@ -72,9 +85,12 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Page<Order> getOrders(int pageNumber, int pageSize, String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDirection.equals("asc") ? Sort.by("id").ascending() : Sort.by("id").descending());
-        return orderRepository.findAll(pageable).map(orderEntityMapper::toOrder);
+    public PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status, Long userId) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "status");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        List<Order> orderEntities = orderRepository.findAllByStatusAndRestaurantOwnerId(status,
+                userId, pageable).stream().map(orderEntityMapper::toOrder).collect(Collectors.toList());
+        return new PaginatedModel<>(orderEntities,pageNumber, pageSize, orderRepository.count());
     }
 
     @Override

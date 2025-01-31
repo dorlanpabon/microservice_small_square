@@ -1,10 +1,16 @@
 package com.pragma.powerup.infrastructure.output.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,8 +29,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
+@ToString(exclude = {"category", "restaurant"})
 @Table(name = "dishes")
 public class DishEntity {
     @Id
@@ -34,6 +40,7 @@ public class DishEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
@@ -44,6 +51,7 @@ public class DishEntity {
     @Column(nullable = false)
     private Double price;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
@@ -53,7 +61,4 @@ public class DishEntity {
 
     @Column(nullable = false)
     private Boolean active = true;
-
-    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDishEntity> orderDishes;
 }

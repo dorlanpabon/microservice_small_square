@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public abstract class OrderDishUseCase implements IOrderDishServicePort {
+public class OrderDishUseCase implements IOrderDishServicePort {
 
     private final IOrderDishPersistencePort orderdishPersistencePort;
 
@@ -44,6 +44,11 @@ public abstract class OrderDishUseCase implements IOrderDishServicePort {
     }
 
     @Override
+    public Page<OrderDish> getOrderDishs(int page, int size, boolean ascending) {
+        return null;
+    }
+
+    @Override
     public Page<OrderDish> getOrderDishs(int pageNumber, int pageSize, String sortDirection) {
         Sort sort = Sort.by("name");
         if ("desc".equalsIgnoreCase(sortDirection)) {
@@ -55,6 +60,4 @@ public abstract class OrderDishUseCase implements IOrderDishServicePort {
         return orderdishPersistencePort.findAll(pageable);
     }
 
-    //TODO: Add pagination support if needed
-    public abstract Page<OrderDish> getOrderDishs(int page, int size, boolean ascending);
 }

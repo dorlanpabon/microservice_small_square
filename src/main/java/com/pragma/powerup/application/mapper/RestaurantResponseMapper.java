@@ -10,12 +10,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface RestaurantResponseMapper {
-    @Mapping(target = "restaurantId", source = "id")
     @Mapping(target = "restaurantName", source = "name")
-    @Mapping(target = "restaurantAddress", source = "address")
-    @Mapping(target = "restaurantOwnerId", source = "ownerId")
-    @Mapping(target = "restaurantPhone", source = "phone")
     @Mapping(target = "restaurantLogoUrl", source = "logoUrl")
-    @Mapping(target = "restaurantNit", source = "nit")
     RestaurantResponse toRestaurantResponse(Restaurant entity);
 }

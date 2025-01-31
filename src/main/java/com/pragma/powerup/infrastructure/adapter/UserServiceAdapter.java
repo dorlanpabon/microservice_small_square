@@ -6,11 +6,14 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceAdapter implements IUserServicePort {
 
     private final UserFeignClient userFeignClient;
+    private final HttpServletRequest request;
 
     @Override
     public boolean isOwner(Long userId) {
@@ -20,5 +23,10 @@ public class UserServiceAdapter implements IUserServicePort {
         } catch (FeignException e) {
             return false;
         }
+    }
+
+    @Override
+    public Long getUserId() {
+        return (Long) request.getAttribute("userId");
     }
 }

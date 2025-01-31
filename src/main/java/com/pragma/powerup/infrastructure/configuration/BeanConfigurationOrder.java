@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.configuration;
 
 import com.pragma.powerup.domain.api.IOrderServicePort;
+import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.domain.usecase.OrderUseCase;
@@ -25,12 +26,7 @@ public class BeanConfigurationOrder {
     }
 
     @Bean
-    public IOrderServicePort orderServicePort() {
-        return new OrderUseCase(orderPersistencePort()) {
-            @Override
-            public Page<Order> getOrders(int page, int size, boolean ascending) {
-                return null;
-            }
-        };
+    public IOrderServicePort orderServicePort(IUserServicePort userServicePort) {
+        return new OrderUseCase(orderPersistencePort(), userServicePort);
     }
 }
