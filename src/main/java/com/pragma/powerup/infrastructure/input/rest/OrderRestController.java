@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
 import com.pragma.powerup.application.dto.PaginatedResponse;
@@ -57,8 +58,8 @@ public class OrderRestController {
 
     @Operation(summary = "Update order", description = "Update an existing order in the system")
     @PutMapping("/")
-    public ResponseEntity<Void> updateOrderInOrder(@RequestBody OrderRequest orderRequest) {
-        orderHandler.updateOrderInOrder(orderRequest);
+    public ResponseEntity<Void> updateOrderInOrder(@RequestBody OrderAssignRequest orderAssignRequest) {
+        orderHandler.updateOrderInOrder(orderAssignRequest);
         return ResponseEntity.noContent().build();
     }
 

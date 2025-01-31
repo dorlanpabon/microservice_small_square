@@ -21,6 +21,8 @@ public class DomainConstants {
     public static final String IMAGE_URL_REQUIRED = "Image URL is required.";
     public static final String CATEGORY_REQUIRED = "Category ID is required.";
     public static final String DISH_NOT_FOUND = "Dish not found.";
+    public static final String RESTAURANT_NOT_FOUND = "Restaurant not found.";
+    public static final String ORDER_ALREADY_EXISTS = "You already have an order in progress.";
 
     private DomainConstants() {
         throw new IllegalStateException("Utility class");

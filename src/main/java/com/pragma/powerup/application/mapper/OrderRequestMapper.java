@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.mapper;
 
+import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderDishRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.domain.model.Dish;
@@ -20,6 +21,9 @@ public interface OrderRequestMapper {
     @Mapping(target = "restaurant", source = "restaurantId")
     @Mapping(target = "orderDishes", source = "orderDishes")
     Order toOrder(OrderRequest orderRequest);
+
+    @Mapping(target = "id", source = "orderId")
+    Order toOrder(OrderAssignRequest orderAssignRequest);
 
     default Restaurant toRestaurant(Long restaurantId) {
         Restaurant restaurant = new Restaurant();

@@ -85,16 +85,20 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status, Long userId) {
+    public PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status,  Long restaurantId) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "status");
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        List<Order> orderEntities = orderRepository.findAllByStatusAndRestaurantOwnerId(status,
-                userId, pageable).stream().map(orderEntityMapper::toOrder).collect(Collectors.toList());
+        List<Order> orderEntities = orderRepository.findAllByStatusAndRestaurantId(status, restaurantId, pageable).stream().map(orderEntityMapper::toOrder).collect(Collectors.toList());
         return new PaginatedModel<>(orderEntities,pageNumber, pageSize, orderRepository.count());
     }
 
     @Override
     public Page<Order> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable).map(orderEntityMapper::toOrder);
+    }
+
+    @Override
+    public Long countByClientIdAndStatus(Long clientId, List<OrderStatusEnum> pending) {
+        return orderRepository.countByClientIdAndStatusIn(clientId, pending);
     }
 }

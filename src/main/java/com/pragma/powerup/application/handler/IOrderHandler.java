@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.handler;
 
+import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
 import com.pragma.powerup.application.dto.PaginatedResponse;
@@ -18,7 +19,7 @@ public interface IOrderHandler {
 
     OrderResponse getOrderFromOrder(Long orderId);
 
-    void updateOrderInOrder(OrderRequest orderRequest);
+    void updateOrderInOrder(OrderAssignRequest orderAssignRequest);
 
     void deleteOrderFromOrder(Long orderId);
 

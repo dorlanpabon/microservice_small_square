@@ -35,4 +35,7 @@ public class EmployeeEntity {
 
     @Column(nullable = false, name = "employee_id")
     private Long employeeId;
+
+    @Column(nullable = false, name = "owner_id")
+    private Long ownerId;
 }

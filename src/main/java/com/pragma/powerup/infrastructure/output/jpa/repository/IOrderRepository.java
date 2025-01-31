@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
@@ -17,5 +18,7 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
 
     Page<OrderEntity> findAllByStatus(OrderStatusEnum status, Pageable pageable);
 
-    Page<OrderEntity> findAllByStatusAndRestaurantOwnerId(OrderStatusEnum status, Long ownerId, Pageable pageable);
+    Page<OrderEntity> findAllByStatusAndRestaurantId(OrderStatusEnum status, Long restaurantId, Pageable pageable);
+
+    Long countByClientIdAndStatusIn(Long clientId, List<OrderStatusEnum> pending);
 }

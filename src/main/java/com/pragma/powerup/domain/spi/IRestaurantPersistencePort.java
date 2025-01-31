@@ -12,4 +12,6 @@ public interface IRestaurantPersistencePort {
     boolean isOwnerOfRestaurant(Long ownerId, Long restaurantId);
 
     PaginatedModel<Restaurant> getRestaurants(int page, int size, String sortDirection);
+
+    Restaurant getByOwnerId(Long ownerId);
 }

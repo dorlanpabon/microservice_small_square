@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.handler;
 
+import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
 import com.pragma.powerup.application.dto.PaginatedResponse;
@@ -57,8 +58,8 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public void updateOrderInOrder(OrderRequest orderRequest) {
-        Order order = orderRequestMapper.toOrder(orderRequest);
+    public void updateOrderInOrder(OrderAssignRequest orderAssignRequest) {
+        Order order = orderRequestMapper.toOrder(orderAssignRequest);
         orderServicePort.updateOrder(order);
     }
 

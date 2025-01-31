@@ -23,9 +23,11 @@ public interface IOrderPersistencePort {
 
     Page<Order> getOrders(int page, int size, boolean ascending);
 
-    PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status, Long userId);
+    PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status, Long restaurantId);
 
     Page<Order> getOrders(PageRequest pageRequest);
 
     Page<Order> findAll(Pageable pageable);
+
+    Long countByClientIdAndStatus(Long clientId, List<OrderStatusEnum> pending);
 }
