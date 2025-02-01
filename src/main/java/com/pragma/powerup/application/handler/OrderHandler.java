@@ -68,4 +68,9 @@ public class OrderHandler implements IOrderHandler {
         orderServicePort.deleteOrder(orderId);
     }
 
+    @Override
+    public void cancelOrder(Long orderId) {
+        orderServicePort.cancelOrder(orderId);
+    }
+
 }

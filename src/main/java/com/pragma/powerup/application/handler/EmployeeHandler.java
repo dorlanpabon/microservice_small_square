@@ -24,39 +24,9 @@ public class EmployeeHandler implements IEmployeeHandler {
     private final IEmployeeServicePort employeeServicePort;
 
     @Override
-    public Page<EmployeeResponse> getEmployees(int page, int size, String sortDirection) {
-        return employeeServicePort.getEmployees(page, size, sortDirection)
-                .map(employeeResponseMapper::toEmployeeResponse);
-    }
-
-    @Override
     public void saveEmployeeInEmployee(EmployeeRequest employeeRequest) {
         Employee employee = employeeRequestMapper.toEmployee(employeeRequest);
         employeeServicePort.saveEmployee(employee);
-    }
-
-    @Override
-    public List<EmployeeResponse> getEmployeeFromEmployee() {
-        return employeeServicePort.getAllEmployee().stream()
-                .map(employeeResponseMapper::toEmployeeResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public EmployeeResponse getEmployeeFromEmployee(Long employeeId) {
-        Employee employee = employeeServicePort.getEmployeeById(employeeId);
-        return employeeResponseMapper.toEmployeeResponse(employee);
-    }
-
-    @Override
-    public void updateEmployeeInEmployee(EmployeeRequest employeeRequest) {
-        Employee employee = employeeRequestMapper.toEmployee(employeeRequest);
-        employeeServicePort.updateEmployee(employee);
-    }
-
-    @Override
-    public void deleteEmployeeFromEmployee(Long employeeId) {
-        employeeServicePort.deleteEmployee(employeeId);
     }
 
 }

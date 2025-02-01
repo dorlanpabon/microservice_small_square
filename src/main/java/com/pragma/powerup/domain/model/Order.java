@@ -11,6 +11,7 @@ public class Order {
     private Restaurant restaurant;
     private Long chefId;
     private List<OrderDish> orderDishes;
+    private String code;
 
     // Getters and Setters
     public Long getId() {
@@ -69,6 +70,14 @@ public class Order {
         this.orderDishes = orderDishes;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -79,6 +88,7 @@ public class Order {
                 ", restaurant=" + restaurant +
                 ", chefId=" + chefId +
                 ", orderDishes=" + orderDishes +
+                ", code='" + code + '\'' +
                 '}';
     }
 }

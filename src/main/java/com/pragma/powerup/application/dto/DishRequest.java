@@ -37,7 +37,4 @@ public class DishRequest {
     @Schema(description = "URL of the dish image", example = "https://example.com/image.jpg")
     private String imageUrl;
 
-    @NotNull(message = ValidationConstants.RESTAURANT_ID_REQUIRED)
-    @Schema(description = "Restaurant ID to which the dish belongs", example = "1")
-    private Long restaurantId;
 }

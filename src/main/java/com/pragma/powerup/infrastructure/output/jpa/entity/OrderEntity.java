@@ -60,7 +60,7 @@ public class OrderEntity {
     private Long chefId;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDishEntity> orderDishes= new ArrayList<>();
 
     public void addOrderDish(OrderDishEntity orderDish) {

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IOrderPersistencePort {
 
@@ -30,4 +31,6 @@ public interface IOrderPersistencePort {
     Page<Order> findAll(Pageable pageable);
 
     Long countByClientIdAndStatus(Long clientId, List<OrderStatusEnum> pending);
+
+    Optional<Order> getOrderByIdAndRestaurantId(Long id, Long restaurantId);
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Restaurant API")
@@ -24,6 +25,7 @@ RestaurantRestController {
 
     @Operation(summary = "Get all restaurants", description = "Retrieve a list of restaurants")
     @GetMapping
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<PaginatedResponse<RestaurantResponse>> getRestaurants(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -39,6 +41,7 @@ RestaurantRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Void> saveRestaurantInRestaurant(@RequestBody RestaurantRequest restaurantRequest) {
         restaurantHandler.saveRestaurantInRestaurant(restaurantRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();

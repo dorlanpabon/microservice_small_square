@@ -14,7 +14,7 @@ public interface OrderEntityMapper {
 
     OrderEntity toEntity(Order order);
 
-    @Mapping(target = "restaurant", ignore = true)
+//    @Mapping(target = "restaurant", ignore = true)
     @Mapping(target = "orderDishes", ignore = true)
     Order toOrder(OrderEntity orderEntity);
 

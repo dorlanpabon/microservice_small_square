@@ -1,5 +1,6 @@
 package com.pragma.powerup.domain.usecase;
 
+import com.pragma.powerup.domain.api.IMessageServicePort;
 import com.pragma.powerup.domain.api.IOrderServicePort;
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.constants.DomainConstants;
@@ -24,11 +25,18 @@ public class OrderUseCase implements IOrderServicePort {
     private final IOrderPersistencePort orderPersistencePort;
     private final IUserServicePort userServicePort;
     private final IEmployeePersistencePort employeePersistencePort;
+    private final IMessageServicePort messageServicePort;
 
-    public OrderUseCase(IOrderPersistencePort orderPersistencePort, IUserServicePort userServicePort, IEmployeePersistencePort employeePersistencePort) {
+    public OrderUseCase(
+            IOrderPersistencePort orderPersistencePort,
+            IUserServicePort userServicePort,
+            IEmployeePersistencePort employeePersistencePort,
+            IMessageServicePort messageServicePort
+    ) {
         this.orderPersistencePort = orderPersistencePort;
         this.userServicePort = userServicePort;
         this.employeePersistencePort = employeePersistencePort;
+        this.messageServicePort = messageServicePort;
     }
 
     @Override
@@ -62,9 +70,43 @@ public class OrderUseCase implements IOrderServicePort {
     @Override
     public void updateOrder(Order order) {
         Long userId = userServicePort.getUserId();
-        order.setClientId(userId);
-        order.setStatus(OrderStatusEnum.IN_PREPARATION.toString());
-        orderPersistencePort.updateOrder(order);
+        Employee employee = employeePersistencePort.getByEmployeeId(userId);
+        if (employee == null){
+            throw new DomainException(DomainConstants.EMPLOYEE_NOT_FOUND);
+        }
+        if(employee.getRestaurant() == null) {
+            throw new DomainException(DomainConstants.RESTAURANT_NOT_FOUND);
+        }
+
+        Long restaurantId = employee.getRestaurant().getId();
+        Order orderUpdated = orderPersistencePort.getOrderByIdAndRestaurantId(order.getId(), restaurantId)
+                .orElseThrow(() -> new DomainException(DomainConstants.ORDER_NOT_FOUND));
+
+
+        if (order.getStatus().equals(OrderStatusEnum.CANCELED.toString()) && orderUpdated.getStatus().equals(OrderStatusEnum.PENDING.toString())) {
+            orderUpdated.setStatus(OrderStatusEnum.CANCELED.toString());
+        } else if (order.getStatus().equals(OrderStatusEnum.IN_PREPARATION.toString()) && orderUpdated.getStatus().equals(OrderStatusEnum.PENDING.toString())) {
+            orderUpdated.setChefId(userId);
+            orderUpdated.setStatus(OrderStatusEnum.IN_PREPARATION.toString());
+        } else if (order.getStatus().equals(OrderStatusEnum.READY.toString()) && orderUpdated.getStatus().equals(OrderStatusEnum.IN_PREPARATION.toString())) {
+            orderUpdated.setStatus(OrderStatusEnum.READY.toString());
+            String phone = userServicePort.getPhone(orderUpdated.getClientId());
+            boolean isSendCode = messageServicePort.sendCode(phone);
+            if (!isSendCode) {
+                throw new DomainException(DomainConstants.MESSAGE_NOT_SENT);
+            }
+        } else if (order.getStatus().equals(OrderStatusEnum.DELIVERED.toString()) && orderUpdated.getStatus().equals(OrderStatusEnum.READY.toString())) {
+            orderUpdated.setStatus(OrderStatusEnum.DELIVERED.toString());
+            String phone = userServicePort.getPhone(orderUpdated.getClientId());
+            boolean isVerifyCode = messageServicePort.verifyCode(phone, orderUpdated.getCode());
+            if (!isVerifyCode) {
+                throw new DomainException(DomainConstants.CODE_NOT_VERIFIED);
+            }
+        } else {
+            throw new DomainException(DomainConstants.INVALID_ORDER_STATUS);
+        }
+
+        orderPersistencePort.updateOrder(orderUpdated);
     }
 
     @Override
@@ -88,6 +130,25 @@ public class OrderUseCase implements IOrderServicePort {
         Long restaurantId = employee.getRestaurant().getId();
 
         return orderPersistencePort.getOrders(pageNumber, pageSize, sortDirection, status, restaurantId);
+    }
+
+    @Override
+    public void cancelOrder(Long orderId) {
+        Order order = orderPersistencePort.getOrderById(orderId);
+        if (order == null) {
+            throw new DomainException(DomainConstants.ORDER_NOT_FOUND);
+        }
+
+        if (!order.getClientId().equals(userServicePort.getUserId())) {
+            throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
+        }
+
+        if (!order.getStatus().equals(OrderStatusEnum.PENDING.toString())) {
+            throw new DomainException(DomainConstants.NOT_CANCELABLE_ORDER);
+        }
+
+        order.setStatus(OrderStatusEnum.CANCELED.toString());
+        orderPersistencePort.updateOrder(order);
     }
 
 }

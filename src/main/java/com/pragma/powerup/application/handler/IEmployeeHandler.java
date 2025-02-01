@@ -8,16 +8,6 @@ import java.util.List;
 
 public interface IEmployeeHandler {
 
-    Page<EmployeeResponse> getEmployees(int page, int size, String sortDirection);
-
     void saveEmployeeInEmployee(EmployeeRequest employeeRequest);
-
-    List<EmployeeResponse> getEmployeeFromEmployee();
-
-    EmployeeResponse getEmployeeFromEmployee(Long employeeId);
-
-    void updateEmployeeInEmployee(EmployeeRequest employeeRequest);
-
-    void deleteEmployeeFromEmployee(Long employeeId);
 
 }

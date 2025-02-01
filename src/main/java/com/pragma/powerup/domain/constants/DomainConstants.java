@@ -23,6 +23,12 @@ public class DomainConstants {
     public static final String DISH_NOT_FOUND = "Dish not found.";
     public static final String RESTAURANT_NOT_FOUND = "Restaurant not found.";
     public static final String ORDER_ALREADY_EXISTS = "You already have an order in progress.";
+    public static final String ORDER_NOT_FOUND = "Order not found.";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee not found.";
+    public static final String INVALID_ORDER_STATUS = "Invalid order status.";
+    public static final String MESSAGE_NOT_SENT = "Message not sent.";
+    public static final String CODE_NOT_VERIFIED = "Code not verified.";
+    public static final String NOT_CANCELABLE_ORDER = "Lo sentimos, tu pedido ya está en preparación y no puede cancelarse.";
 
     private DomainConstants() {
         throw new IllegalStateException("Utility class");

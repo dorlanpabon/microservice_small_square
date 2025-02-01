@@ -3,6 +3,8 @@ package com.pragma.powerup.domain.spi;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Restaurant;
 
+import java.util.Optional;
+
 public interface IRestaurantPersistencePort {
 
     void saveRestaurant(Restaurant restaurant);
@@ -14,4 +16,6 @@ public interface IRestaurantPersistencePort {
     PaginatedModel<Restaurant> getRestaurants(int page, int size, String sortDirection);
 
     Restaurant getByOwnerId(Long ownerId);
+
+    Restaurant getRestaurantIdByOwnerId(Long userId);
 }

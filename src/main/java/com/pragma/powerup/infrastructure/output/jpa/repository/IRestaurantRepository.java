@@ -16,4 +16,6 @@ public interface IRestaurantRepository extends JpaRepository<RestaurantEntity, L
     boolean existsByIdAndOwnerId(Long restaurantId, Long ownerId);
 
     RestaurantEntity findByOwnerId(Long ownerId);
+
+    Optional<Long> findIdByOwnerId(Long userId);
 }

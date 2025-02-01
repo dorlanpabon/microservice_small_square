@@ -21,4 +21,6 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     Page<OrderEntity> findAllByStatusAndRestaurantId(OrderStatusEnum status, Long restaurantId, Pageable pageable);
 
     Long countByClientIdAndStatusIn(Long clientId, List<OrderStatusEnum> pending);
+
+    Optional<OrderEntity> findByIdAndRestaurantId(Long id, Long restaurantId);
 }

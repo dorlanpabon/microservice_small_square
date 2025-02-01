@@ -23,4 +23,5 @@ public interface IOrderHandler {
 
     void deleteOrderFromOrder(Long orderId);
 
+    void cancelOrder(Long orderId);
 }

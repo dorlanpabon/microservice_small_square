@@ -20,7 +20,6 @@ public interface DishRequestMapper {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "imageUrl", source = "imageUrl")
-    @Mapping(target = "restaurant", source = "restaurantId")
     Dish toDish(DishRequest dishRequest);
 
     @Mapping(target = "id", expression  = "java(dishId)")

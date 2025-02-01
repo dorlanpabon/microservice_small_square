@@ -22,4 +22,6 @@ public interface IOrderServicePort {
     Page<Order> getOrders(int page, int size, boolean ascending);
 
     PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status);
+
+    void cancelOrder(Long orderId);
 }

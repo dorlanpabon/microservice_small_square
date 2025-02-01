@@ -6,4 +6,5 @@ public interface IUserServicePort {
 
     Long getUserId();
 
+    String getPhone(Long userId);
 }

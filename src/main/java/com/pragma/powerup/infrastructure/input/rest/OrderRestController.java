@@ -70,4 +70,12 @@ public class OrderRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Cancel order", description = "Cancel an existing order in the system")
+    @PutMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId) {
+        orderHandler.cancelOrder(orderId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

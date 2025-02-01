@@ -23,6 +23,8 @@ public interface OrderRequestMapper {
     Order toOrder(OrderRequest orderRequest);
 
     @Mapping(target = "id", source = "orderId")
+    @Mapping(target = "status", source = "status")
+    @Mapping(target = "code", source = "code")
     Order toOrder(OrderAssignRequest orderAssignRequest);
 
     default Restaurant toRestaurant(Long restaurantId) {

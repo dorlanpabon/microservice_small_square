@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -58,9 +59,6 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
     @Override
     public void updateOrder(Order order) {
-        //if (orderRepository.findByName(order.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Order already exists");
-        //}
         orderRepository.save(orderEntityMapper.toEntity(order));
     }
 
@@ -100,5 +98,10 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public Long countByClientIdAndStatus(Long clientId, List<OrderStatusEnum> pending) {
         return orderRepository.countByClientIdAndStatusIn(clientId, pending);
+    }
+
+    @Override
+    public Optional<Order> getOrderByIdAndRestaurantId(Long id, Long restaurantId) {
+        return Optional.ofNullable(orderEntityMapper.toOrder(orderRepository.findByIdAndRestaurantId(id, restaurantId).orElse(null)));
     }
 }

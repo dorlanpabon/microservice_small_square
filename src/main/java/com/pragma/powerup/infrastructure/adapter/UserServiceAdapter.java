@@ -29,4 +29,9 @@ public class UserServiceAdapter implements IUserServicePort {
     public Long getUserId() {
         return (Long) request.getAttribute("userId");
     }
+
+    @Override
+    public String getPhone(Long userId) {
+        return userFeignClient.getPhone(userId);
+    }
 }

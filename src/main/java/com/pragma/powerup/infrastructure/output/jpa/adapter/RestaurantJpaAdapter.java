@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -57,6 +58,12 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     @Override
     public Restaurant getByOwnerId(Long ownerId) {
         return restaurantEntityMapper.toRestaurant(restaurantRepository.findByOwnerId(ownerId));
+    }
+
+    @Override
+    public Restaurant getRestaurantIdByOwnerId(Long userId) {
+        System.out.println("RestaurantJpaAdapter.getRestaurantIdByOwnerId");
+        return restaurantEntityMapper.toRestaurant(restaurantRepository.findByOwnerId(userId));
     }
 
 }

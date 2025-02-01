@@ -6,6 +6,7 @@ import com.pragma.powerup.domain.constants.DomainConstants;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.exception.DomainException;
 import com.pragma.powerup.domain.model.Dish;
+import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import org.springframework.data.domain.Page;
@@ -29,11 +30,11 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public void saveDish(Dish dish) {
-
+        
         Long userId = userServicePort.getUserId();
-        Long restaurantId = dish.getRestaurant().getId();
+        Restaurant restaurant = restaurantPersistencePort.getRestaurantIdByOwnerId(userId);
 
-        if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurantId)) {
+        if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurant.getId())) {
             throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
         }
 
@@ -54,6 +55,7 @@ public class DishUseCase implements IDishServicePort {
         }
 
         dish.setActive(true);
+        dish.setRestaurant(restaurant);
 
         dishPersistencePort.saveDish(dish);
     }
