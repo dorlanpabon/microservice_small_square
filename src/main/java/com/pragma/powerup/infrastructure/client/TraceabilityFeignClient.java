@@ -4,7 +4,6 @@ import com.pragma.powerup.application.dto.LogResponse;
 import com.pragma.powerup.application.dto.LogTimeResponse;
 import com.pragma.powerup.domain.model.Log;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

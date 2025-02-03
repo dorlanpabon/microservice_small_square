@@ -4,18 +4,23 @@ import com.pragma.powerup.application.dto.DishRequest;
 import com.pragma.powerup.application.dto.DishResponse;
 import com.pragma.powerup.application.dto.DishUpdateRequest;
 import com.pragma.powerup.application.dto.PaginatedResponse;
-import com.pragma.powerup.application.handler.DishHandler;
 import com.pragma.powerup.application.handler.IDishHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Dish API")
@@ -68,7 +73,7 @@ public class DishRestController {
     }
 
     @Operation(summary = "Delete dish by ID", description = "Remove an existing dish from the system")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{dishId}")
     public ResponseEntity<Void> deleteDishFromDish(@PathVariable Long dishId) {
         dishHandler.deleteDishFromDish(dishId);
         return ResponseEntity.noContent().build();

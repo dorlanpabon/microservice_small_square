@@ -1,6 +1,5 @@
 package com.pragma.powerup.infrastructure.output.jpa.adapter;
 
-import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
@@ -12,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -62,7 +59,6 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     @Override
     public Restaurant getRestaurantIdByOwnerId(Long userId) {
-        System.out.println("RestaurantJpaAdapter.getRestaurantIdByOwnerId");
         return restaurantEntityMapper.toRestaurant(restaurantRepository.findByOwnerId(userId));
     }
 

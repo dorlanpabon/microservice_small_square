@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfiguration {
 
+    private static final String SECURITY_SCHEME_NAME = "BearerAuth";
+
     @Bean
     public OpenAPI customOpenApi(@Value("${appdescription}") String appDescription,
                                  @Value("${appversion}") String appVersion){
@@ -25,13 +27,13 @@ public class OpenApiConfiguration {
                         .termsOfService("http://swagger.io/terms/")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
                 )
-                .addSecurityItem(new SecurityRequirement().addList("BearerAuth")) // 🔒 Se requiere autenticación
-                .components(new Components().addSecuritySchemes("BearerAuth",
+                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME)) // 🔒 Se requiere autenticación
+                .components(new Components().addSecuritySchemes(SECURITY_SCHEME_NAME,
                         securityScheme()));
     }
     private SecurityScheme securityScheme() {
         return new SecurityScheme()
-                .name("BearerAuth")
+                .name(SECURITY_SCHEME_NAME)
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
                 .bearerFormat("JWT");

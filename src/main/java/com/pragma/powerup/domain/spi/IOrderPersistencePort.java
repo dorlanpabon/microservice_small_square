@@ -4,8 +4,8 @@ import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import com.pragma.powerup.domain.model.Order;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;

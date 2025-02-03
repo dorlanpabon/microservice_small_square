@@ -22,9 +22,6 @@ public class OrderDishJpaAdapter implements IOrderDishPersistencePort {
 
     @Override
     public void saveOrderDish(OrderDish orderdish) {
-        //if (orderdishRepository.findByName(orderdish.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("OrderDish already exists");
-        //}
         orderdishRepository.save(orderdishEntityMapper.toEntity(orderdish));
     }
 
@@ -45,9 +42,6 @@ public class OrderDishJpaAdapter implements IOrderDishPersistencePort {
 
     @Override
     public void updateOrderDish(OrderDish orderdish) {
-        //if (orderdishRepository.findByName(orderdish.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("OrderDish already exists");
-        //}
         orderdishRepository.save(orderdishEntityMapper.toEntity(orderdish));
     }
 

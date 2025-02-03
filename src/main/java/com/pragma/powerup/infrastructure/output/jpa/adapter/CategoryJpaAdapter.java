@@ -22,9 +22,6 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public void saveCategory(Category category) {
-        //if (categoryRepository.findByName(category.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Category already exists");
-        //}
         categoryRepository.save(categoryEntityMapper.toEntity(category));
     }
 
@@ -45,9 +42,6 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public void updateCategory(Category category) {
-        //if (categoryRepository.findByName(category.getName()).isPresent()) {
-        //    throw new IllegalArgumentException("Category already exists");
-        //}
         categoryRepository.save(categoryEntityMapper.toEntity(category));
     }
 

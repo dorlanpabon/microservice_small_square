@@ -1,16 +1,13 @@
 package com.pragma.powerup.infrastructure.output.jpa.adapter;
 
 import com.pragma.powerup.domain.model.Employee;
-import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IEmployeePersistencePort;
 import com.pragma.powerup.infrastructure.output.jpa.entity.EmployeeEntity;
 import com.pragma.powerup.infrastructure.output.jpa.mapper.EmployeeEntityMapper;
 import com.pragma.powerup.infrastructure.output.jpa.repository.IEmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -4,15 +4,12 @@ import com.pragma.powerup.application.dto.DishRequest;
 import com.pragma.powerup.application.dto.DishResponse;
 import com.pragma.powerup.application.dto.DishUpdateRequest;
 import com.pragma.powerup.application.dto.PaginatedResponse;
-import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.application.mapper.DishRequestMapper;
 import com.pragma.powerup.application.mapper.DishResponseMapper;
 import com.pragma.powerup.domain.api.IDishServicePort;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Dish;
-import com.pragma.powerup.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

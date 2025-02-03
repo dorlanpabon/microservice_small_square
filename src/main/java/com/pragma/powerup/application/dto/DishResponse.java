@@ -1,10 +1,7 @@
 package com.pragma.powerup.application.dto;
 
-import com.pragma.powerup.domain.model.OrderDish;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

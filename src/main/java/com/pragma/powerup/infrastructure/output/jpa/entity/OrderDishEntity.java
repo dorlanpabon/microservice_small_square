@@ -1,7 +1,6 @@
 package com.pragma.powerup.infrastructure.output.jpa.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

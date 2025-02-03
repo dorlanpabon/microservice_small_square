@@ -7,18 +7,14 @@ import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
 import com.pragma.powerup.application.dto.PaginatedResponse;
-import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.application.mapper.LogResponseMapper;
 import com.pragma.powerup.application.mapper.OrderRequestMapper;
 import com.pragma.powerup.application.mapper.OrderResponseMapper;
 import com.pragma.powerup.domain.api.IOrderServicePort;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.enums.OrderStatusEnum;
-import com.pragma.powerup.domain.model.Log;
 import com.pragma.powerup.domain.model.Order;
-import com.pragma.powerup.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

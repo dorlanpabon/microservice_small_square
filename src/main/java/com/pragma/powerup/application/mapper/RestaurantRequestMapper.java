@@ -1,7 +1,6 @@
 package com.pragma.powerup.application.mapper;
 
 import com.pragma.powerup.application.dto.RestaurantRequest;
-import com.pragma.powerup.application.dto.RestaurantResponse;
 import com.pragma.powerup.domain.model.Restaurant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

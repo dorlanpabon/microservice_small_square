@@ -15,7 +15,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -67,14 +75,14 @@ public class OrderRestController {
     }
 
     @Operation(summary = "Delete order by ID", description = "Remove an existing order from the system")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrderFromOrder(@PathVariable Long orderId) {
         orderHandler.deleteOrderFromOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Cancel order", description = "Cancel an existing order in the system")
-    @PutMapping("/cancel/{id}")
+    @PutMapping("/cancel/{orderId}")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId) {
         orderHandler.cancelOrder(orderId);

@@ -2,10 +2,8 @@ package com.pragma.powerup.infrastructure.output.jpa.adapter;
 
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.model.Dish;
-import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.output.jpa.entity.DishEntity;
-import com.pragma.powerup.infrastructure.output.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.output.jpa.mapper.DishEntityMapper;
 import com.pragma.powerup.infrastructure.output.jpa.repository.IDishRepository;
 import lombok.RequiredArgsConstructor;

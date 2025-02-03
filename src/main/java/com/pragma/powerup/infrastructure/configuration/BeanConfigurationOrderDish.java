@@ -1,7 +1,6 @@
 package com.pragma.powerup.infrastructure.configuration;
 
 import com.pragma.powerup.domain.api.IOrderDishServicePort;
-import com.pragma.powerup.domain.model.OrderDish;
 import com.pragma.powerup.domain.spi.IOrderDishPersistencePort;
 import com.pragma.powerup.domain.usecase.OrderDishUseCase;
 import com.pragma.powerup.infrastructure.output.jpa.adapter.OrderDishJpaAdapter;
@@ -10,7 +9,6 @@ import com.pragma.powerup.infrastructure.output.jpa.repository.IOrderDishReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
 
 @Configuration
 @RequiredArgsConstructor
