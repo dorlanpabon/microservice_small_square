@@ -1,5 +1,8 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.LogEmployeeResponse;
+import com.pragma.powerup.application.dto.LogResponse;
+import com.pragma.powerup.application.dto.LogTimeResponse;
 import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
@@ -78,4 +81,36 @@ public class OrderRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get all logs by order id", description = "Retrieve a list of logs by order id")
+    @GetMapping("/logs/{orderId}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<List<LogResponse>> getLogsByOrderId(@PathVariable Long orderId) {
+        List<LogResponse> logs = orderHandler.getLogsByOrderId(orderId);
+        return ResponseEntity.ok(logs);
+    }
+
+    @Operation(summary = "Get time in INIT and END by order ID", description = "Retrieve the time in INIT and END by order ID")
+    @GetMapping("/order/{orderId}/time")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<LogTimeResponse> getLogsTimeByOrderId(@PathVariable Long orderId) {
+        LogTimeResponse logTime = orderHandler.getLogsTimeByOrderId(orderId);
+        return ResponseEntity.ok(logTime);
+    }
+
+    @Operation(summary = "Get time in INIT and END by orders of the restaurant", description = "Retrieve the time in INIT and END by orders of the restaurant")
+    @GetMapping("/order/time")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<List<LogTimeResponse>> getLogsTimeByOrders() {
+        List<LogTimeResponse> logTimes = orderHandler.getLogsTimeByRestaurant();
+        return ResponseEntity.ok(logTimes);
+    }
+
+    // Get average time by employee
+    @Operation(summary = "Get average time by employee", description = "Retrieve the average time by employee")
+    @GetMapping("/order/average")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<List<LogEmployeeResponse>> getAverageTimeByEmployee() {
+        List<LogEmployeeResponse> logTimes = orderHandler.getAverageTimeByEmployee();
+        return ResponseEntity.ok(logTimes);
+    }
 }

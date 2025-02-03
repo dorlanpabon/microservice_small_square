@@ -2,23 +2,28 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IMessageServicePort;
 import com.pragma.powerup.domain.api.IOrderServicePort;
+import com.pragma.powerup.domain.api.ITraceabilityServicePort;
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.constants.DomainConstants;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.enums.OrderStatusEnum;
 import com.pragma.powerup.domain.exception.DomainException;
 import com.pragma.powerup.domain.model.Employee;
+import com.pragma.powerup.domain.model.Log;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IEmployeePersistencePort;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
+import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderUseCase implements IOrderServicePort {
 
@@ -26,17 +31,22 @@ public class OrderUseCase implements IOrderServicePort {
     private final IUserServicePort userServicePort;
     private final IEmployeePersistencePort employeePersistencePort;
     private final IMessageServicePort messageServicePort;
+    private final ITraceabilityServicePort traceabilityServicePort;
+    private final IRestaurantPersistencePort restaurantPersistencePort;
 
     public OrderUseCase(
             IOrderPersistencePort orderPersistencePort,
             IUserServicePort userServicePort,
             IEmployeePersistencePort employeePersistencePort,
-            IMessageServicePort messageServicePort
+            IMessageServicePort messageServicePort,
+            ITraceabilityServicePort traceabilityServicePort, IRestaurantPersistencePort restaurantPersistencePort
     ) {
         this.orderPersistencePort = orderPersistencePort;
         this.userServicePort = userServicePort;
         this.employeePersistencePort = employeePersistencePort;
         this.messageServicePort = messageServicePort;
+        this.traceabilityServicePort = traceabilityServicePort;
+        this.restaurantPersistencePort = restaurantPersistencePort;
     }
 
     @Override
@@ -54,7 +64,22 @@ public class OrderUseCase implements IOrderServicePort {
             throw new DomainException(DomainConstants.ORDER_ALREADY_EXISTS);
         }
 
-        orderPersistencePort.saveOrder(order);
+        Order orderCreated = orderPersistencePort.saveOrder(order);
+
+        sendLog(orderCreated);
+
+    }
+
+    private void sendLog(Order orderCreated) {
+        Log log = new Log();
+        log.setClientId(orderCreated.getClientId());
+        log.setOrderId(orderCreated.getId());
+        log.setRestaurantId(orderCreated.getRestaurant().getId());
+        log.setType(orderCreated.getStatus());
+        log.setRestaurantId(orderCreated.getRestaurant().getId());
+        log.setTimestamp(LocalDateTime.now());
+
+        traceabilityServicePort.createLog(log);
     }
 
     @Override
@@ -71,10 +96,10 @@ public class OrderUseCase implements IOrderServicePort {
     public void updateOrder(Order order) {
         Long userId = userServicePort.getUserId();
         Employee employee = employeePersistencePort.getByEmployeeId(userId);
-        if (employee == null){
+        if (employee == null) {
             throw new DomainException(DomainConstants.EMPLOYEE_NOT_FOUND);
         }
-        if(employee.getRestaurant() == null) {
+        if (employee.getRestaurant() == null) {
             throw new DomainException(DomainConstants.RESTAURANT_NOT_FOUND);
         }
 
@@ -107,6 +132,8 @@ public class OrderUseCase implements IOrderServicePort {
         }
 
         orderPersistencePort.updateOrder(orderUpdated);
+
+        sendLog(orderUpdated);
     }
 
     @Override
@@ -149,6 +176,73 @@ public class OrderUseCase implements IOrderServicePort {
 
         order.setStatus(OrderStatusEnum.CANCELED.toString());
         orderPersistencePort.updateOrder(order);
+    }
+
+    @Override
+    public List<Log> getLogsByOrderId(Long orderId) {
+        Order order = orderPersistencePort.getOrderById(orderId);
+        if (order == null) {
+            throw new DomainException(DomainConstants.ORDER_NOT_FOUND);
+        }
+
+        if (!order.getClientId().equals(userServicePort.getUserId())) {
+            throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
+        }
+
+        return traceabilityServicePort.getLogsByOrderId(orderId);
+    }
+
+    @Override
+    public Long getLogsTimeByOrderId(Long orderId) {
+
+        Long userId = userServicePort.getUserId();
+        Restaurant restaurant = restaurantPersistencePort.getRestaurantIdByOwnerId(userId);
+
+        if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurant.getId())) {
+            throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
+        }
+
+        return traceabilityServicePort.getLogsTimeByOrderId(orderId);
+    }
+
+    @Override
+    public List<Log> getLogsTimeByRestaurant() {
+        Long userId = userServicePort.getUserId();
+        Restaurant restaurant = restaurantPersistencePort.getRestaurantIdByOwnerId(userId);
+
+        if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurant.getId())) {
+            throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
+        }
+
+        List<Long> orderIds = orderPersistencePort.getOrderIdsByRestaurantIdAndStatus(restaurant.getId(), OrderStatusEnum.DELIVERED);
+
+        return traceabilityServicePort.getLogsTimeByOrders(orderIds);
+    }
+
+    @Override
+    public List<Log> getAverageTimeByEmployee() {
+        Long userId = userServicePort.getUserId();
+        Restaurant restaurant = restaurantPersistencePort.getRestaurantIdByOwnerId(userId);
+
+        if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurant.getId())) {
+            throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
+        }
+
+
+        List<Long> employeeIds = employeePersistencePort.getEmployeeIdsByRestaurantId(restaurant.getId());
+        List<Log> logs = new ArrayList<>();
+        for (Long employeeId : employeeIds) {
+            List<Long> orderIds = orderPersistencePort.getOrderIdsByChefIdAndStatus(employeeId, OrderStatusEnum.DELIVERED);
+            List<Log> listLog = traceabilityServicePort.getLogsTimeByOrders(orderIds);
+            long sum = listLog.stream().mapToLong(Log::getTime).sum();
+            Long average = sum / listLog.size();
+            Log log = new Log();
+            log.setChefId(employeeId);
+            log.setTime(average);
+            logs.add(log);
+        }
+
+        return logs;
     }
 
 }

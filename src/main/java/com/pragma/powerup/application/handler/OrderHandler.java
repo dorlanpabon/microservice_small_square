@@ -1,15 +1,20 @@
 package com.pragma.powerup.application.handler;
 
+import com.pragma.powerup.application.dto.LogEmployeeResponse;
+import com.pragma.powerup.application.dto.LogResponse;
+import com.pragma.powerup.application.dto.LogTimeResponse;
 import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
 import com.pragma.powerup.application.dto.PaginatedResponse;
 import com.pragma.powerup.application.dto.RestaurantResponse;
+import com.pragma.powerup.application.mapper.LogResponseMapper;
 import com.pragma.powerup.application.mapper.OrderRequestMapper;
 import com.pragma.powerup.application.mapper.OrderResponseMapper;
 import com.pragma.powerup.domain.api.IOrderServicePort;
 import com.pragma.powerup.domain.dto.PaginatedModel;
 import com.pragma.powerup.domain.enums.OrderStatusEnum;
+import com.pragma.powerup.domain.model.Log;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,7 @@ public class OrderHandler implements IOrderHandler {
     private final OrderRequestMapper orderRequestMapper;
     private final OrderResponseMapper orderResponseMapper;
     private final IOrderServicePort orderServicePort;
+    private final LogResponseMapper logResponseMapper;
 
     @Override
     public PaginatedResponse<OrderResponse> getOrders(int page, int size, String sortDirection, OrderStatusEnum status) {
@@ -71,6 +77,30 @@ public class OrderHandler implements IOrderHandler {
     @Override
     public void cancelOrder(Long orderId) {
         orderServicePort.cancelOrder(orderId);
+    }
+
+    @Override
+    public List<LogResponse> getLogsByOrderId(Long orderId) {
+       return orderServicePort.getLogsByOrderId(orderId).stream()
+                .map(logResponseMapper::toLogResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public LogTimeResponse getLogsTimeByOrderId(Long orderId) {
+        Long time = orderServicePort.getLogsTimeByOrderId(orderId);
+        return new LogTimeResponse(time, orderId);
+    }
+
+    @Override
+    public List<LogTimeResponse> getLogsTimeByRestaurant() {
+        return orderServicePort.getLogsTimeByRestaurant().stream()
+                .map(logResponseMapper::toLogTimeResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LogEmployeeResponse> getAverageTimeByEmployee() {
+        return orderServicePort.getAverageTimeByEmployee().stream()
+                .map(logResponseMapper::toLogEmployeeResponse).collect(Collectors.toList());
     }
 
 }

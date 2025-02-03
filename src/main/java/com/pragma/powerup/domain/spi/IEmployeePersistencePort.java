@@ -15,4 +15,6 @@ public interface IEmployeePersistencePort {
     Page<Employee> findAll(Pageable pageable);
 
     Employee getByEmployeeId(Long userId);
+
+    List<Long> getEmployeeIdsByRestaurantId(Long id);
 }

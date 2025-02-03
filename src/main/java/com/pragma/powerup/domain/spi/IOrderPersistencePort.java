@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface IOrderPersistencePort {
 
-    void saveOrder(Order order);
+    Order saveOrder(Order order);
 
     List<Order> getAllOrder();
 
@@ -33,4 +33,8 @@ public interface IOrderPersistencePort {
     Long countByClientIdAndStatus(Long clientId, List<OrderStatusEnum> pending);
 
     Optional<Order> getOrderByIdAndRestaurantId(Long id, Long restaurantId);
+
+    List<Long> getOrderIdsByRestaurantIdAndStatus(Long id, OrderStatusEnum status);
+
+    List<Long> getOrderIdsByChefIdAndStatus(Long employeeId, OrderStatusEnum orderStatusEnum);
 }

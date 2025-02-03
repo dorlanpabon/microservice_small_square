@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class EmployeeJpaAdapter implements IEmployeePersistencePort {
@@ -35,5 +36,10 @@ public class EmployeeJpaAdapter implements IEmployeePersistencePort {
     public Employee getByEmployeeId(Long userId) {
         return employeeEntityMapper.toEmployee(employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found")));
+    }
+
+    @Override
+    public List<Long> getEmployeeIdsByRestaurantId(Long id) {
+        return employeeRepository.getEmployeeIdsByRestaurantId(id).stream().map(EmployeeEntity::getEmployeeId).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,8 @@
 package com.pragma.powerup.application.handler;
 
+import com.pragma.powerup.application.dto.LogEmployeeResponse;
+import com.pragma.powerup.application.dto.LogResponse;
+import com.pragma.powerup.application.dto.LogTimeResponse;
 import com.pragma.powerup.application.dto.OrderAssignRequest;
 import com.pragma.powerup.application.dto.OrderRequest;
 import com.pragma.powerup.application.dto.OrderResponse;
@@ -24,4 +27,12 @@ public interface IOrderHandler {
     void deleteOrderFromOrder(Long orderId);
 
     void cancelOrder(Long orderId);
+
+    List<LogResponse> getLogsByOrderId(Long orderId);
+
+    LogTimeResponse getLogsTimeByOrderId(Long orderId);
+
+    List<LogTimeResponse> getLogsTimeByRestaurant();
+
+    List<LogEmployeeResponse> getAverageTimeByEmployee();
 }

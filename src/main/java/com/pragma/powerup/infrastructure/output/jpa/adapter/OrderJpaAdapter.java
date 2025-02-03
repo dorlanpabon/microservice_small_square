@@ -29,7 +29,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final OrderEntityMapper orderEntityMapper;
 
     @Override
-    public void saveOrder(Order order) {
+    public Order saveOrder(Order order) {
         OrderEntity orderEntity = orderEntityMapper.toEntity(order);
 
         List<OrderDishEntity> dishesCopy = new ArrayList<>(orderEntity.getOrderDishes());
@@ -39,7 +39,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             orderEntity.addOrderDish(dish);
         }
 
-        orderRepository.save(orderEntity);
+        return orderEntityMapper.toOrder(orderRepository.save(orderEntity));
     }
 
     @Override
@@ -104,4 +104,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public Optional<Order> getOrderByIdAndRestaurantId(Long id, Long restaurantId) {
         return Optional.ofNullable(orderEntityMapper.toOrder(orderRepository.findByIdAndRestaurantId(id, restaurantId).orElse(null)));
     }
+
+    @Override
+    public List<Long> getOrderIdsByRestaurantIdAndStatus(Long id, OrderStatusEnum status) {
+        return orderRepository.findIdsByRestaurantIdAndStatus(id, status).stream().map(OrderEntity::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> getOrderIdsByChefIdAndStatus(Long employeeId, OrderStatusEnum orderStatusEnum) {
+        return orderRepository.findIdsByChefIdAndStatus(employeeId, orderStatusEnum).stream().map(OrderEntity::getId).collect(Collectors.toList());
+    }
+
 }

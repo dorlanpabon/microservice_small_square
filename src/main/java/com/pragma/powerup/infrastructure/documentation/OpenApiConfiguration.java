@@ -19,7 +19,7 @@ public class OpenApiConfiguration {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Hexagonal Microservices Users API")
+                        .title("Hexagonal Microservices Small Square  API")
                         .version(appVersion)
                         .description(appDescription)
                         .termsOfService("http://swagger.io/terms/")
