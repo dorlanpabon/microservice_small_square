@@ -15,7 +15,6 @@ import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IEmployeePersistencePort;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -139,11 +138,6 @@ public class OrderUseCase implements IOrderServicePort {
     @Override
     public void deleteOrder(Long orderId) {
         orderPersistencePort.deleteOrder(orderId);
-    }
-
-    @Override
-    public Page<Order> getOrders(int page, int size, boolean ascending) {
-        return null;
     }
 
     @Override

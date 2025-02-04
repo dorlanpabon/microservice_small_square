@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/restaurants")
 @RequiredArgsConstructor
-public class
-RestaurantRestController {
+public class RestaurantRestController {
 
     private final IRestaurantHandler restaurantHandler;
 

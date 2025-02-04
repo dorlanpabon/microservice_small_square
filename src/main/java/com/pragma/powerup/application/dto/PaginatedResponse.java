@@ -2,6 +2,7 @@ package com.pragma.powerup.application.dto;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Data
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class PaginatedResponse<T> {
     private List<T> content;
     private int currentPage;

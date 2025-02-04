@@ -52,15 +52,6 @@ public class DishJpaAdapter implements IDishPersistencePort {
         dishRepository.deleteById(dishId);
     }
 
-    @Override
-    public Page<Dish> getDishs(PageRequest pageRequest) {
-        Page<DishEntity> entityPage = dishRepository.findAll(pageRequest);
-        if (entityPage.isEmpty()) {
-            throw new IllegalArgumentException("No Dishs found");
-        }
-        return entityPage.map(dishEntityMapper::toDish);
-    }
-
 
     @Override
     public PaginatedModel<Dish> getDishs(int page, int size, String sortDirection, Long categoryId) {
@@ -81,10 +72,5 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
         return new PaginatedModel<>(content, dishEntities.getNumber(),
                 dishEntities.getTotalPages(), dishEntities.getTotalElements());
-    }
-
-    @Override
-    public Page<Dish> findAll(Pageable pageable) {
-        return dishRepository.findAll(pageable).map(dishEntityMapper::toDish);
     }
 }

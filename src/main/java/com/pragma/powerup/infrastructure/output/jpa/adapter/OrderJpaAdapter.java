@@ -9,7 +9,6 @@ import com.pragma.powerup.infrastructure.output.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.output.jpa.mapper.OrderEntityMapper;
 import com.pragma.powerup.infrastructure.output.jpa.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -63,31 +62,11 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Page<Order> getOrders(PageRequest pageRequest) {
-        Page<OrderEntity> entityPage = orderRepository.findAll(pageRequest);
-        if (entityPage.isEmpty()) {
-            throw new IllegalArgumentException("No Orders found");
-        }
-        return entityPage.map(orderEntityMapper::toOrder);
-    }
-
-    @Override
-    public Page<Order> getOrders(int page, int size, boolean ascending) {
-        Pageable pageable = PageRequest.of(page, size, ascending ? Sort.by("id").ascending() : Sort.by("id").descending());
-        return orderRepository.findAll(pageable).map(orderEntityMapper::toOrder);
-    }
-
-    @Override
     public PaginatedModel<Order> getOrders(int pageNumber, int pageSize, String sortDirection, OrderStatusEnum status,  Long restaurantId) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "status");
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         List<Order> orderEntities = orderRepository.findAllByStatusAndRestaurantId(status, restaurantId, pageable).stream().map(orderEntityMapper::toOrder).collect(Collectors.toList());
         return new PaginatedModel<>(orderEntities,pageNumber, pageSize, orderRepository.count());
-    }
-
-    @Override
-    public Page<Order> findAll(Pageable pageable) {
-        return orderRepository.findAll(pageable).map(orderEntityMapper::toOrder);
     }
 
     @Override

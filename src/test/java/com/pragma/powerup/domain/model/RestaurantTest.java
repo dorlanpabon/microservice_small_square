@@ -61,4 +61,16 @@ class RestaurantTest {
         restaurant.setNit(expectedNit);
         assertThat(restaurant.getNit()).isEqualTo(expectedNit);
     }
+
+    @Test
+    void shouldToString() {
+        restaurant.setId(1L);
+        restaurant.setName("La Pizzeria");
+        restaurant.setAddress("123 Main Street");
+        restaurant.setOwnerId(100L);
+        restaurant.setPhone("+573005698325");
+        restaurant.setLogoUrl("http://pragma.com.co/logo.png");
+        restaurant.setNit("123456789");
+        assertThat(restaurant.toString()).isEqualTo("Restaurant{id=1, name='La Pizzeria', address='123 Main Street', ownerId=100, phone='+573005698325', logoUrl='http://pragma.com.co/logo.png', nit='123456789'}");
+    }
 }
