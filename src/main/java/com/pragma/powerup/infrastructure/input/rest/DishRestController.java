@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Tag(name = "Dish API")
 @RestController
@@ -52,12 +49,6 @@ public class DishRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Retrieve Dish list", description = "Get all dishs")
-    @GetMapping("/")
-    public ResponseEntity<List<DishResponse>> getDishFromDish() {
-        return ResponseEntity.ok(dishHandler.getDishFromDish());
-    }
-
     @Operation(summary = "Retrieve Dish by ID", description = "Get a single dish by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<DishResponse> getDishFromDish(@PathVariable(name = "id") Long dishId) {
@@ -69,13 +60,6 @@ public class DishRestController {
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<Void> updateDishInDish(@PathVariable Long dishId, @RequestBody DishUpdateRequest dishUpdateRequest) {
         dishHandler.updateDishInDish(dishId, dishUpdateRequest);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "Delete dish by ID", description = "Remove an existing dish from the system")
-    @DeleteMapping("/{dishId}")
-    public ResponseEntity<Void> deleteDishFromDish(@PathVariable Long dishId) {
-        dishHandler.deleteDishFromDish(dishId);
         return ResponseEntity.noContent().build();
     }
 

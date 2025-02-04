@@ -13,7 +13,6 @@ public class DomainConstants {
     public static final String PHONE_REGEX = "^[+]?[0-9]{1,13}$";
     public static final String NAME_REGEX = "^(?![0-9]+$).+$";
 
-
     public static final String NOT_OWNER_MESSAGE = "You are not the owner of this restaurant.";
     public static final String DISH_NAME_REQUIRED = "Dish name is required.";
     public static final String PRICE_REQUIRED = "Price must be a positive integer greater than 0.";

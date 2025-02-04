@@ -1,11 +1,9 @@
 package com.pragma.powerup.application.dto;
 
-import com.pragma.powerup.domain.model.OrderDish;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,10 +17,10 @@ public class OrderResponse {
 
     private String orderStatus;
 
-    private RestaurantResponse orderRestaurant;
+//    private RestaurantResponse orderRestaurant;
 
     private Long orderChefId;
 
-    private List<OrderDish> orderOrderDishes;
+//    private List<OrderDish> orderOrderDishes;
 
 }

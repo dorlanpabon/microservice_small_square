@@ -14,8 +14,8 @@ public interface OrderResponseMapper {
     @Mapping(target = "orderClientId", source = "clientId")
     @Mapping(target = "orderDate", source = "date")
     @Mapping(target = "orderStatus", source = "status")
-    @Mapping(target = "orderRestaurant", source = "restaurant")
+//    @Mapping(target = "orderRestaurant", source = "restaurant")
     @Mapping(target = "orderChefId", source = "chefId")
-    @Mapping(target = "orderOrderDishes", source = "orderDishes")
+//    @Mapping(target = "orderOrderDishes", source = "orderDishes")
     OrderResponse toOrderResponse(Order entity);
 }

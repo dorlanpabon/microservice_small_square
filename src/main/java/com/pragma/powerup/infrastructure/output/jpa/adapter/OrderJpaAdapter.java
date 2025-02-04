@@ -43,9 +43,6 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public List<Order> getAllOrder() {
         List<OrderEntity> entityList = orderRepository.findAll();
-        if (entityList.isEmpty()) {
-            throw new IllegalArgumentException("No Orders found");
-        }
         return orderEntityMapper.toOrderList(entityList);
     }
 

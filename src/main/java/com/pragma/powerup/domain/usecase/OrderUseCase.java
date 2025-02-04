@@ -80,7 +80,11 @@ public class OrderUseCase implements IOrderServicePort {
 
     @Override
     public List<Order> getAllOrder() {
-        return orderPersistencePort.getAllOrder();
+        List<Order> listOrder = orderPersistencePort.getAllOrder();
+        if (listOrder.isEmpty()) {
+            throw new DomainException(DomainConstants.ORDER_NOT_FOUND);
+        }
+        return listOrder;
     }
 
     @Override
@@ -119,7 +123,7 @@ public class OrderUseCase implements IOrderServicePort {
         } else if (order.getStatus().equals(OrderStatusEnum.DELIVERED.toString()) && orderUpdated.getStatus().equals(OrderStatusEnum.READY.toString())) {
             orderUpdated.setStatus(OrderStatusEnum.DELIVERED.toString());
             String phone = userServicePort.getPhone(orderUpdated.getClientId());
-            boolean isVerifyCode = messageServicePort.verifyCode(phone, orderUpdated.getCode());
+            boolean isVerifyCode = messageServicePort.verifyCode(phone, order.getCode());
             if (!isVerifyCode) {
                 throw new DomainException(DomainConstants.CODE_NOT_VERIFIED);
             }
@@ -223,7 +227,6 @@ public class OrderUseCase implements IOrderServicePort {
         if (!restaurantPersistencePort.isOwnerOfRestaurant(userId, restaurant.getId())) {
             throw new DomainException(DomainConstants.NOT_OWNER_MESSAGE);
         }
-
 
         List<Long> employeeIds = employeePersistencePort.getEmployeeIdsByRestaurantId(restaurant.getId());
         List<Log> logs = new ArrayList<>();

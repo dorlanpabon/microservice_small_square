@@ -25,4 +25,4 @@ spring:
 #    init:
 #      mode: always
 #      data-locations: classpath:data-dev.sql
-debug: true
+debug: false

@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,29 +54,10 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Retrieve Order list", description = "Get all orders")
-    @GetMapping("/")
-    public ResponseEntity<List<OrderResponse>> getOrderFromOrder() {
-        return ResponseEntity.ok(orderHandler.getOrderFromOrder());
-    }
-
-    @Operation(summary = "Retrieve Order by ID", description = "Get a single order by its ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrderFromOrder(@PathVariable(name = "id") Long orderId) {
-        return ResponseEntity.ok(orderHandler.getOrderFromOrder(orderId));
-    }
-
     @Operation(summary = "Update order", description = "Update an existing order in the system")
     @PutMapping("/")
     public ResponseEntity<Void> updateOrderInOrder(@RequestBody OrderAssignRequest orderAssignRequest) {
         orderHandler.updateOrderInOrder(orderAssignRequest);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "Delete order by ID", description = "Remove an existing order from the system")
-    @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrderFromOrder(@PathVariable Long orderId) {
-        orderHandler.deleteOrderFromOrder(orderId);
         return ResponseEntity.noContent().build();
     }
 
